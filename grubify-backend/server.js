@@ -1,15 +1,16 @@
 const express = require("express");
 const cors = require("cors");
-const menuData = require("./menu"); 
+const menuData = require("./menu");
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = 3000;
 let orders = [];
 app.use(cors());
 app.use(express.json());
-
-app.get("/menu", (req, res) => {
-  res.json(menuData);
+app.use('/api', userRoutes);
+app.get("/menu/:category", (req, res) => {
+  res.json(menuData[req.params.category]);
 });
 
 app.post("/order", (req, res) => {
@@ -25,7 +26,6 @@ app.post("/order", (req, res) => {
 
 app.get("/", (req, res) => {
   res.send("hi mates");
-  console.log("New Order Received:", orders);
 });
 
 app.listen(PORT, () => {
